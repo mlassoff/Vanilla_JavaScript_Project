@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="key.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Gelasio:400,700&display=swap" rel="stylesheet">        <style>
+            body{
+                font-family: 'Gelasio', serif;
+                margin: 10px;
+            }
+            
+            #form{
+                border: 1px solid black;
+                padding: 10px;
+                background-color: #fafafa;
+            }
+            #form button {
+                width: 100%;
+                font-size: 1.25em;
+                height: 30px;
+                background-color: orange;
+                font-family: 'Gelasio', serif;
+
+            }
+            
+            #form input{
+                font-size: 1.25em;
+                width: 100%;
+                background-color: antiquewhite;
+                margin-bottom: 10px;
+            }
+            
+            #result{
+                margin-top: 10px;
+                
+            }
+        </style>
+    </head>
+    <body>
+        <div id="form">
+        <label for="address">Address</label>
+        <input type="text" id="address"/>
+        <button id="btnGetData">Get Civic Data</button>
+        </div>
+        <div id="result"></div>
+        
+        <script>
+            let btnGetData = document.getElementById('btnGetData');
+            let resultArea = document.getElementById('result');
+            let textAddress = document.getElementById('address');
+            
+            btnGetData.onclick = function(){
+                let address = textAddress.value;
+                var url = "https://www.googleapis.com/civicinfo/v2/representatives?key=" + googleKey + "&address=" + address
+                console.log(url);
+                
+           fetch(url)
+                  .then((resp) => resp.json()) 
+                  .then(function(data) {
+                    console.log(data);
+                    let out = "";
+                    for(var x =0; x < data.offices.length; x++){
+                        out += "<strong>" +data.offices[x].name;
+                        out += ":</strong> " + data.officials[data.offices[x].officialIndices[0]].name + "<br/>";
+                    }
+               
+                    resultArea.innerHTML = out;
+               
+                })
+            }
+        </script>
+</body>        
+</html>
